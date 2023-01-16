@@ -1,0 +1,22 @@
+function permutations(string){
+  var hash = {};
+  var resArr = [];
+  var subroutine = function(testStr, newString){
+    newString = newString || '';
+    if(newString.length === string.length){
+      hash[newString] = true;
+      return;
+    }
+    for(var i = 0; i < testStr.length; i++){
+      var cur = testStr[i];
+      var str = newString + cur;
+      var excision = testStr.substring(0, i) + testStr.substring(i+1);
+      subroutine(excision, str);
+    }
+  }; 
+  subroutine(string);
+  for(var key in hash){
+    resArr.push(key);
+  }
+  return resArr;
+}

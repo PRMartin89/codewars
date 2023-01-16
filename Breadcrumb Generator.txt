@@ -1,0 +1,41 @@
+String.prototype.acronymize = function (separator) {
+  const toIgnore = ["the","of","in","from","by","with","and", "or", "for", "to", "at", "a"];
+  return this.split(separator)
+    .map(val => (toIgnore.includes(val))? '' : val[0].toUpperCase())
+    .join('');
+}
+function generateBC(url, separator) {
+  let crumbs = url.replace(/((\/index)?\.(html?|(ph|as)p))|(\?.+|#.+|https?:\/\/|\/$)/g, '')
+                  .split('/'),
+      link='',
+      text='',
+      result = [];
+  result = crumbs.map(function(val, i, arr) {
+    if(i===0)
+      return ['/','HOME'];
+    link = (link)? link+'/'+val : val;
+    text = (val.length > 30)? val.acronymize('-') : val.replace(/(-)/g,' ').toUpperCase();
+    return ['/'+link+'/',text];
+  });
+  return render(result,result.length-1,separator);
+}
+function render(list, lastIndex, separator) {
+  return list.map( (item,i) => {
+    if(i<lastIndex)
+      return `<a href="${item[0]}">${item[1]}</a>`;
+    else
+      return `<span class="active">${item[1]}</span>`;
+  }).join(`${separator}`);
+}
+// test cases
+const testUrls = [
+  ["mysite.com/pictures/holidays.html", " | "],
+  ["www.codewars.com/users/GiacomoSorbi", " / "],
+  ["www.microsoft.com/docs/index.htm?a=2&b=1", " :: "],
+  ["mysite.com", " | "],
+  ["www.microsoft.com/important/confidential/docs/info/index.htm#topagain", " * "],
+  ["mysite.com/very-long-url-to-make-a-silly-yet-meaningful-example/example.asp", " > "],
+  ["www.very-long-site_name-to-make-a-silly-yet-meaningful-example.com/users/giacomo-sorbi", " + "],
+  ['http://twitter.de/or-or-or-of-surfer-meningitis-eurasian-diplomatic/diplomatic-by-of-bioengineering-surfer-cauterization/skin-transmutation-diplomatic/a-transmutation-of-bioengineering-kamehameha-bed-paper-pippi/secret-page.php', ' . ']
+];
+console.log( testUrls.map( ([url,separator]) => generateBC(url,separator) ));

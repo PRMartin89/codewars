@@ -1,0 +1,11 @@
+function sumDigPow(a, b) {
+   let eureka = []
+for(i = a; i <= b; i++){
+let digit = String(i).split('')
+if(i == digit.reduce(function(accumulator, currentValue, currectIndex){
+   return accumulator + currentValue**(currectIndex + 1)
+}, 0))
+eureka.push(i)
+}
+return eureka
+}

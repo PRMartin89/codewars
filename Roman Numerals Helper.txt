@@ -1,0 +1,55 @@
+const code = {
+  I: 1,
+  V: 5,
+  X: 10,
+  L: 50,
+  C: 100,
+  D: 500,
+  M: 1000
+}
+
+const RomanNumerals = {
+  toRoman: (num) => {
+    let answer = '';
+    const keys = Object.keys(code);
+    let index = 0;
+
+    while(num) {
+      const dividedNum = num % 10;
+      console.log(num, dividedNum)
+      if(dividedNum) {
+        if(dividedNum === 4) {
+          answer = keys[index] + keys[index + 1] + answer;
+          num -= 4;
+        }
+        else if(dividedNum === 5) {
+          answer = keys[index + 1] + answer;
+          num -= 5;
+        }
+        else if(dividedNum === 9) {
+          answer = keys[index] + keys[index + 2] + answer;
+          num -= 9;
+        }
+        else {
+          answer = keys[index] + answer;
+          num -= 1;
+        }
+      }
+      else {
+        index += 2;
+        num = num / 10|0;
+      }
+    }
+
+    return answer;
+  },
+  fromRoman: (str) => {
+    let answer = 0;
+ 
+    for(let i = 0; i < str.length; i++) {
+      answer += code[str[i]] < code[str[i + 1]] ? code[str[i]] * -1 : code[str[i]];
+    }
+
+    return answer;
+  }
+}

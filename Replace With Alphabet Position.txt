@@ -1,0 +1,10 @@
+function alphabetPosition(text) {
+  return text
+    .replace(/(\W|\d|\_)/gm, "")
+    .toLowerCase()
+    .split("")
+    .map((item) => {
+      return item.charCodeAt(0) - 96
+    })
+    .join(" ");
+}
